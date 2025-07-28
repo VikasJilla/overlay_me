@@ -1,0 +1,7 @@
+splash:
+  overlay_me: Superponerme
+  create_amazing_photo_overlays: Crea increíbles superposiciones de fotos
+
+welcome:
+  welcome_back(String name): Bienvenido de nuevo, $name
+  ready_to_create_overlays: Listo para crear superposiciones?

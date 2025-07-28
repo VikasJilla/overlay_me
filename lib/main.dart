@@ -1,20 +1,62 @@
 import 'package:flutter/material.dart';
+import 'package:overlay_me/extensions/context_extension.dart';
+import 'package:overlay_me/localization/app_localizations.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'screens/onboarding_screen.dart';
 import 'screens/home_screen.dart';
 import 'screens/profile_screen.dart';
 import 'screens/photo_editing_screen.dart';
-import 'models/user_profile.dart';
-import 'services/storage_service.dart';
 import 'services/permission_service.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(const OverlayMeApp());
 }
 
-class OverlayMeApp extends StatelessWidget {
+class OverlayMeApp extends StatefulWidget {
   const OverlayMeApp({super.key});
+
+  @override
+  State<OverlayMeApp> createState() => _OverlayMeAppState();
+}
+
+class _OverlayMeAppState extends State<OverlayMeApp> {
+  Locale? _locale;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadLocale();
+  }
+
+  Future<void> _loadLocale() async {
+    final prefs = await SharedPreferences.getInstance();
+    final savedLanguageCode = prefs.getString('languageCode');
+
+    if (savedLanguageCode != null) {
+      // Use saved user preference
+      setState(() {
+        _locale = Locale(savedLanguageCode);
+      });
+    } else {
+      // Use device locale if supported, otherwise default to English
+      final deviceLocale = WidgetsBinding.instance.platformDispatcher.locale;
+      final supportedLanguageCodes = AppLocalizations.supportedLocales.map((locale) => locale.languageCode).toList();
+      print('deviceLocale: $deviceLocale');
+      print('supportedLanguageCodes: $supportedLanguageCodes');
+      if (supportedLanguageCodes.contains(deviceLocale.languageCode)) {
+        setState(() {
+          _locale = deviceLocale;
+        });
+      } else {
+        setState(() {
+          _locale = const Locale('en'); // Default to English
+        });
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +67,14 @@ class OverlayMeApp extends StatelessWidget {
         useMaterial3: true,
         appBarTheme: const AppBarTheme(backgroundColor: Colors.blue, foregroundColor: Colors.white, elevation: 0),
       ),
+      localizationsDelegates: [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: AppLocalizations.supportedLocales,
+      locale: _locale,
       home: const SplashScreen(),
       routes: {
         '/onboarding': (context) => const OnboardingScreen(),
@@ -78,11 +128,14 @@ class _SplashScreenState extends State<SplashScreen> {
             Icon(Icons.photo_library, size: 100, color: Colors.white),
             const SizedBox(height: 20),
             Text(
-              'Overlay Me',
+              context.translations.splash.overlay_me,
               style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold, color: Colors.white),
             ),
             const SizedBox(height: 10),
-            Text('Create amazing photo overlays', style: TextStyle(fontSize: 16, color: Colors.white70)),
+            Text(
+              context.translations.splash.create_amazing_photo_overlays,
+              style: TextStyle(fontSize: 16, color: Colors.white70),
+            ),
             const SizedBox(height: 40),
             CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.white)),
           ],

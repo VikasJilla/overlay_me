@@ -1,0 +1,12 @@
+targets:
+  $default:
+    builders:
+      i69n:yamlBasedBuilder:
+        enabled: true
+        options:
+          input_directory: lib/localization/translations
+          output_directory: lib/localization/translations
+          class_name: Translation
+          header: |
+            // ignore_for_file: unused_element, unused_field, camel_case_types, annotate_overrides, prefer_single_quotes
+            // GENERATED FILE, do not edit! 

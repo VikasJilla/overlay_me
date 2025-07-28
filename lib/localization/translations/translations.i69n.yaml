@@ -1,0 +1,7 @@
+splash:
+  overlay_me: Overlay Me
+  create_amazing_photo_overlays: Create amazing photo overlays
+
+welcome:
+  welcome_back(String name): Welcome back, $name
+  ready_to_create_overlays: Ready to create overlays?

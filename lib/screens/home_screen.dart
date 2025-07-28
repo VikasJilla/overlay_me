@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
+import 'package:overlay_me/extensions/context_extension.dart';
 import '../models/user_profile.dart';
 import '../services/storage_service.dart';
 
@@ -61,13 +62,13 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   const SizedBox(height: 15),
                   Text(
-                    'Welcome back, ${_userProfile?.name ?? 'User'}!',
+                    context.translations.welcome.welcome_back(_userProfile?.name ?? 'User'),
                     style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 5),
                   Text(
-                    _userProfile?.businessDetails ?? 'Ready to create overlays?',
+                    context.translations.welcome.ready_to_create_overlays,
                     style: const TextStyle(fontSize: 16, color: Colors.grey),
                     textAlign: TextAlign.center,
                   ),
