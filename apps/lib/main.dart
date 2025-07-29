@@ -44,8 +44,6 @@ class _OverlayMeAppState extends State<OverlayMeApp> {
       // Use device locale if supported, otherwise default to English
       final deviceLocale = WidgetsBinding.instance.platformDispatcher.locale;
       final supportedLanguageCodes = AppLocalizations.supportedLocales.map((locale) => locale.languageCode).toList();
-      print('deviceLocale: $deviceLocale');
-      print('supportedLanguageCodes: $supportedLanguageCodes');
       if (supportedLanguageCodes.contains(deviceLocale.languageCode)) {
         setState(() {
           _locale = deviceLocale;
